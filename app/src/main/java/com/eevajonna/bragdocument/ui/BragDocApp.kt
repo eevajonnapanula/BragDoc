@@ -12,6 +12,8 @@ import androidx.compose.material3.ExtendedFloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
@@ -19,6 +21,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -36,9 +39,10 @@ import com.eevajonna.bragdocument.ui.components.AddItemDialog
 import com.eevajonna.bragdocument.ui.components.DeleteAlertDialog
 import com.eevajonna.bragdocument.ui.components.GenerateSummaryDialog
 import com.eevajonna.bragdocument.ui.components.NavBar
-import com.eevajonna.bragdocument.ui.components.NavRoutes
 import com.eevajonna.bragdocument.ui.screens.BragItemsScreen
+import com.eevajonna.bragdocument.ui.screens.NavRoutes
 import com.eevajonna.bragdocument.ui.screens.SummariesScreen
+import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -67,7 +71,13 @@ fun BragDocApp(viewModel: BragDocViewModel) {
         mutableStateOf(NavRoutes.Items.route)
     }
 
+    val scope = rememberCoroutineScope()
+    val snackbarHostState = remember { SnackbarHostState() }
+
     Scaffold(
+        snackbarHost = {
+            SnackbarHost(hostState = snackbarHostState)
+        },
         topBar = {
             TopAppBar(title = {
                 Text(
@@ -94,13 +104,19 @@ fun BragDocApp(viewModel: BragDocViewModel) {
                         )
                     }
                     NavRoutes.Summaries.route -> ExtendedFloatingActionButton(
-                        onClick = { showGenerateSummaryDialog = true },
+                        onClick = {
+                            if (viewModel.bragItems.count { it.summaryId == null } >= 3) {
+                                showGenerateSummaryDialog = true
+                            } else
+                                scope.launch {
+                                    snackbarHostState.showSnackbar("You need to have at least three items in your list that are not yet part of a summary.")
+                                }
+                        },
                         icon = {
                             Icon(Icons.Default.Edit, contentDescription = null)
                         },
                         text = { Text("Generate summary") },
                     )
-                    else -> null
                 }
             }
         },

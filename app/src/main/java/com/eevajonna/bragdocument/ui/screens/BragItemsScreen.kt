@@ -49,7 +49,8 @@ fun BragItemsScreen(bragItems: List<BragItem>, onDelete: (BragItem) -> Unit) {
                         modifier = Modifier.padding(vertical = BragItemsScreen.yearPadding),
                     )
                 }
-                items(itemsForYear.sortedByDescending { it.date }) { item ->
+
+                items(itemsForYear.sortedWith(compareByDescending<BragItem> { it.date }.thenBy { it.summaryId })) { item ->
                     BragItemListItem(item) {
                         onDelete(item)
                     }
@@ -62,14 +63,14 @@ fun BragItemsScreen(bragItems: List<BragItem>, onDelete: (BragItem) -> Unit) {
 @Composable
 fun BragItemListItem(item: BragItem, onDeleteIconClick: (BragItem) -> Unit) {
     var deleteVisible by remember { mutableStateOf(false) }
-
+    val background = if (item.summaryId != null) MaterialTheme.colorScheme.surfaceVariant else MaterialTheme.colorScheme.secondaryContainer
     Row(
         modifier = Modifier
             .fillMaxWidth()
             .clickable(role = Role.Button) {
                 deleteVisible = !deleteVisible
             }
-            .background(MaterialTheme.colorScheme.secondaryContainer)
+            .background(background)
             .padding(BragItemsScreen.itemPadding),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(BragItemsScreen.itemContentPadding),
@@ -118,10 +119,10 @@ fun BragItemScreenPreview() {
     BragDocumentTheme {
         BragItemsScreen(
             bragItems = listOf(
-                BragItem(0, LocalDate.now(), "Helped my colleague to solve an issue"),
-                BragItem(1, LocalDate.now().minusMonths(1), "Mentored a more junior colleague"),
+                BragItem(0, LocalDate.now(), "Helped my colleague to solve an issue", 1),
+                BragItem(1, LocalDate.now().minusMonths(1), "Mentored a more junior colleague", 2),
                 BragItem(2, LocalDate.now().minusMonths(4), "Solved very complex issues"),
-                BragItem(1, LocalDate.now().minusYears(1), "Mentored a more junior colleague"),
+                BragItem(1, LocalDate.now().minusYears(1), "Mentored a more junior colleague", 2),
                 BragItem(2, LocalDate.now().minusMonths(6).minusYears(1), "Solved very complex issues"),
             ),
         ) {}

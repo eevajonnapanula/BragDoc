@@ -12,8 +12,9 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.navigation.NavController
+import com.eevajonna.bragdocument.ui.screens.NavRoutes
+import com.eevajonna.bragdocument.ui.screens.NavigationItem
 
 @Composable
 fun NavBar(navController: NavController) {
@@ -25,7 +26,11 @@ fun NavBar(navController: NavController) {
             NavRoutes.Items.route,
             "Items",
         ),
-        NavigationItem(Icons.Filled.Favorite, NavRoutes.Summaries.route, "Summaries"),
+        NavigationItem(
+            Icons.Filled.Favorite,
+            NavRoutes.Summaries.route,
+            "Summaries",
+        ),
     )
 
     NavigationBar {
@@ -40,17 +45,5 @@ fun NavBar(navController: NavController) {
                 icon = { Icon(navigationItem.icon, contentDescription = null) },
             )
         }
-    }
-}
-
-class NavigationItem(val icon: ImageVector, val route: String, val text: String)
-
-sealed class NavRoutes {
-    data object Items : NavRoutes() {
-        const val route = "items"
-    }
-
-    data object Summaries : NavRoutes() {
-        const val route = "summaries"
     }
 }

@@ -82,7 +82,7 @@ fun GenerateSummaryDialog(
                 modifier = Modifier
                     .padding(paddingValues)
                     .verticalScroll(rememberScrollState()),
-                verticalArrangement = Arrangement.spacedBy(12.dp),
+                verticalArrangement = Arrangement.spacedBy(GenerateSummaryDialog.contentSpacing),
             ) {
                 OutlinedTextField(modifier = Modifier.fillMaxWidth(), label = { Text("Title for Summary") }, value = title, onValueChange = { title = it })
                 if (error.isNotEmpty()) {
@@ -112,13 +112,19 @@ fun GenerateSummaryDialog(
                         modifier = Modifier
                             .fillMaxWidth()
                             .clip(
-                                RoundedCornerShape(12.dp),
+                                GenerateSummaryDialog.shape,
                             )
                             .background(MaterialTheme.colorScheme.secondaryContainer)
-                            .padding(12.dp),
+                            .padding(GenerateSummaryDialog.padding),
                     )
                 }
             }
         }
     }
+}
+
+object GenerateSummaryDialog {
+    val shape = RoundedCornerShape(12.dp)
+    val padding = 12.dp
+    val contentSpacing = 12.dp
 }

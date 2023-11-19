@@ -41,7 +41,7 @@ fun ValuePicker(
     Column(
         modifier = Modifier
             .padding(vertical = ValuePicker.outerPadding)
-            .clip(RoundedCornerShape(ValuePicker.cornerRadius))
+            .clip(ValuePicker.shape)
             .background(MaterialTheme.colorScheme.surfaceVariant)
             .padding(ValuePicker.contentPadding),
     ) {
@@ -105,5 +105,5 @@ fun Dropdown(values: List<String>, expanded: Boolean, onClose: (Boolean) -> Unit
 object ValuePicker {
     val outerPadding = 8.dp
     val contentPadding = 8.dp
-    val cornerRadius = 12.dp
+    val shape = RoundedCornerShape(12.dp)
 }
