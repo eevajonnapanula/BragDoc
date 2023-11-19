@@ -140,7 +140,7 @@ fun BragDocApp(viewModel: BragDocViewModel) {
                 composable(NavRoutes.Summaries.route) { _ ->
                     SummariesScreen(
                         viewModel.summaries,
-                        itemsCount = viewModel.bragItems.count { item -> item.summaryId != null },
+                        itemsCount = viewModel.bragItems.count { item -> item.summaryId == null },
                         onEmptyStateButtonClick = { showGenerateSummaryDialog = true },
                     ) { summary ->
                         showDeleteSummaryDialog = true
