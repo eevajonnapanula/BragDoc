@@ -22,9 +22,11 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
+import com.eevajonna.bragdocument.R
 import java.text.DateFormatSymbols
 import java.time.LocalDate
 
@@ -55,7 +57,7 @@ fun AddItemDialog(onDismissRequest: () -> Unit, onAddItem: (text: String, date: 
                         IconButton(onClick = { onDismissRequest() }) {
                             Icon(
                                 Icons.Filled.Close,
-                                "Close",
+                                stringResource(R.string.button_close),
                             )
                         }
                     },
@@ -67,7 +69,7 @@ fun AddItemDialog(onDismissRequest: () -> Unit, onAddItem: (text: String, date: 
                                 onAddItem(text, date)
                             },
                         ) {
-                            Text("Save")
+                            Text(stringResource(R.string.button_save))
                         }
                     },
                 )
@@ -89,7 +91,13 @@ fun AddItemDialog(onDismissRequest: () -> Unit, onAddItem: (text: String, date: 
                     setSelectedYear = { year = it },
                 )
 
-                OutlinedTextField(modifier = Modifier.fillMaxWidth(), label = { Text("The cool thing I did") }, value = text, onValueChange = { text = it })
+                OutlinedTextField(modifier = Modifier.fillMaxWidth(), label = {
+                    Text(
+                        stringResource(
+                            R.string.add_item_text_label,
+                        ),
+                    )
+                }, value = text, onValueChange = { text = it })
             }
         }
     }

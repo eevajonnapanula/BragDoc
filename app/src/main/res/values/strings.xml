@@ -1,3 +1,33 @@
 <resources>
     <string name="app_name">BragDoc</string>
+    <string name="system_prompt">You are a helpful assistant helping with self reflections for performance reviews.</string>
+    <string name="add_item_text_label">The cool thing I did</string>
+    <string name="button_save">Save</string>
+    <string name="button_close">Close</string>
+    <string name="delete_dialog_title">Are you sure?</string>
+    <string name="button_delete">Delete</string>
+    <string name="do_you_want_to_delete">Do you want to delete \"%1$s\"?</string>
+    <string name="button_dismiss">Dismiss</string>
+    <string name="placeholder_summary_title">Summary (%1$s/%2$s)</string>
+    <string name="create_new_summary_title">Create new summary</string>
+    <string name="button_generate">Generate</string>
+    <string name="title_for_summary">Title for Summary</string>
+    <string name="button_try_again">Try again</string>
+    <string name="generating_summary">Generating summary...</string>
+    <string name="summary">Summary</string>
+    <string name="items_included">Items included</string>
+    <string name="items">Items</string>
+    <string name="summaries">Summaries</string>
+    <string name="button_copy_text">Copy text</string>
+    <string name="month_and_year">Month and Year</string>
+    <string name="something_went_wrong">Something went wrong.</string>
+    <string name="error_text">Error: %1$s</string>
+    <string name="prompt">Could you summarize the following items for a self reflection for performance review about %1$d sentences long? Assume it\'s from the past 12 months. %2$s</string>
+    <string name="button_add_item">Add item</string>
+    <string name="button_generate_summary">Generate summary</string>
+    <string name="minimum_three_items">You need to have at least three items in your list that are not yet part of a summary.</string>
+    <string name="items_empty_state_title">Time to add things you are proud of</string>
+    <string name="items_empty_state_content">Start adding things you\'ve done</string>
+    <string name="summaries_empty_state_title">Generate your first summary</string>
+    <string name="summaries_empty_state_content">"When you have have added at least three items, you can generate a report from \"Generate summary\"-button "</string>
 </resources>

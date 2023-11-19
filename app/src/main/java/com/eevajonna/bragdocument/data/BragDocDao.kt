@@ -34,4 +34,7 @@ interface BragDocDao {
 
     @Delete
     fun deleteSummary(summary: Summary)
+
+    @Query("UPDATE BragItem SET summaryId = NULL WHERE summaryId = :id")
+    fun setSummaryIdsNull(id: Long)
 }

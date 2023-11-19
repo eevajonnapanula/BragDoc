@@ -35,5 +35,8 @@ class BragDocRepositoryImpl(private val dao: BragDocDao) : BragDocRepository {
 
     override suspend fun deleteBragItem(bragItem: BragItem) = dao.deleteBragItem(bragItem)
 
-    override suspend fun deleteSummary(summary: Summary) = dao.deleteSummary(summary)
+    override suspend fun deleteSummary(summary: Summary) {
+        dao.deleteSummary(summary)
+        dao.setSummaryIdsNull(summary.id)
+    }
 }

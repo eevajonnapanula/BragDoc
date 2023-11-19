@@ -23,7 +23,9 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import com.eevajonna.bragdocument.R
 
 @Composable
 fun ValuePicker(
@@ -45,7 +47,7 @@ fun ValuePicker(
             .background(MaterialTheme.colorScheme.surfaceVariant)
             .padding(ValuePicker.contentPadding),
     ) {
-        Text("Month and Year", style = MaterialTheme.typography.titleMedium)
+        Text(stringResource(R.string.month_and_year), style = MaterialTheme.typography.titleMedium)
         Row(modifier = Modifier.fillMaxWidth()) {
             Box {
                 TextButton(onClick = { monthsOpen = true }) {

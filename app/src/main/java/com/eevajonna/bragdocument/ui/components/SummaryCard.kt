@@ -23,8 +23,10 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalClipboardManager
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.unit.dp
+import com.eevajonna.bragdocument.R
 import com.eevajonna.bragdocument.data.Summary
 
 @Composable
@@ -35,21 +37,20 @@ fun SummaryCard(summary: Summary, onDeleteSummary: (Summary) -> Unit) {
     }
     Card(
         modifier = Modifier
-            .clickable { expanded = !expanded }
             .fillMaxWidth(),
     ) {
         Column(modifier = Modifier.padding(SummaryCard.contentPadding), verticalArrangement = Arrangement.spacedBy(SummaryCard.contentSpacing)) {
-            Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.SpaceBetween, modifier = Modifier.fillMaxWidth()) {
+            Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.SpaceBetween, modifier = Modifier.fillMaxWidth().clickable { expanded = !expanded }) {
                 Text("${summary.title}", style = MaterialTheme.typography.titleLarge)
                 if (expanded) {
                     IconButton(onClick = { onDeleteSummary(summary) }) {
-                        Icon(Icons.Outlined.Delete, "Delete")
+                        Icon(Icons.Outlined.Delete, stringResource(id = R.string.button_delete))
                     }
                 }
             }
             if (expanded) {
                 Button(onClick = { clipboardManager.setText(AnnotatedString(summary.text)) }) {
-                    Text("Copy text")
+                    Text(stringResource(R.string.button_copy_text))
                 }
                 SelectionContainer {
                     Text(summary.text)

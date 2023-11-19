@@ -1,12 +1,14 @@
 package com.eevajonna.bragdocument.ui
 
 import android.app.Application
+import android.content.Context
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
+import com.eevajonna.bragdocument.R
 import com.eevajonna.bragdocument.data.AppDatabase
 import com.eevajonna.bragdocument.data.BragDocRepository
 import com.eevajonna.bragdocument.data.BragDocRepositoryImpl
@@ -56,33 +58,42 @@ class BragDocViewModel(application: Application) : ViewModel() {
         }
     }
 
-    fun generateSummary(title: String, itemsInSummary: List<BragItem>) {
+    fun generateSummary(context: Context, title: String, itemsInSummary: List<BragItem>) {
         val textItems = itemsInSummary.map { it.text }
 
         try {
             viewModelScope.launch(Dispatchers.IO) {
                 loading = true
 
-                val summaryContent = openAIService.getPerformanceReview(textItems)
+                val summaryContent = openAIService.getPerformanceReview(context, textItems)
 
                 summaryContent?.let { content ->
-                    summary = content
-                    val summaryId = repository.addSummary(
-                        Summary(
-                            title = title,
-                            text = content,
-                        ),
-                    )
+                    if (summaryContent.startsWith(context.getString(R.string.error_text))) {
+                        error = context.getString(R.string.something_went_wrong)
+                    } else {
+                        summary = content
+                        val summaryId = repository.addSummary(
+                            Summary(
+                                title = title,
+                                text = content,
+                            ),
+                        )
 
-                    itemsInSummary.forEach {
-                        repository.updateBragItem(it.copy(summaryId = summaryId))
+                        itemsInSummary.forEach {
+                            repository.updateBragItem(it.copy(summaryId = summaryId))
+                        }
                     }
                 }
 
                 loading = false
             } } catch (e: Exception) {
-            error = "Something went wrong."
+            error = context.getString(R.string.something_went_wrong)
         }
+    }
+
+    fun clearErrorAndSummary() {
+        error = ""
+        summary = ""
     }
 
     private fun getItems() {

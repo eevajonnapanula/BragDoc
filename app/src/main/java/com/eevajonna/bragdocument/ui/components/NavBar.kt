@@ -12,7 +12,9 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavController
+import com.eevajonna.bragdocument.R
 import com.eevajonna.bragdocument.ui.screens.NavRoutes
 import com.eevajonna.bragdocument.ui.screens.NavigationItem
 
@@ -24,12 +26,12 @@ fun NavBar(navController: NavController) {
         NavigationItem(
             Icons.Filled.List,
             NavRoutes.Items.route,
-            "Items",
+            stringResource(R.string.items),
         ),
         NavigationItem(
             Icons.Filled.Favorite,
             NavRoutes.Summaries.route,
-            "Summaries",
+            stringResource(R.string.summaries),
         ),
     )
 

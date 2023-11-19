@@ -29,9 +29,11 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
+import com.eevajonna.bragdocument.R
 import com.eevajonna.bragdocument.data.BragItem
 import java.time.LocalDate
 
@@ -46,8 +48,13 @@ fun GenerateSummaryDialog(
     onAddItem: (String, List<BragItem>) -> Unit,
 ) {
     val today = LocalDate.now()
+    val initialTitle = stringResource(
+        R.string.placeholder_summary_title,
+        today.monthValue,
+        today.year,
+    )
     var title by remember {
-        mutableStateOf("Summary (${today.monthValue}/${today.year})")
+        mutableStateOf(initialTitle)
     }
 
     Dialog(onDismissRequest = { onDismissRequest() }, properties = DialogProperties(usePlatformDefaultWidth = false)) {
@@ -55,24 +62,24 @@ fun GenerateSummaryDialog(
             topBar = {
                 TopAppBar(
                     title = {
-                        Text("Create new summary")
+                        Text(stringResource(R.string.create_new_summary_title))
                     },
                     navigationIcon = {
                         IconButton(onClick = { onDismissRequest() }) {
                             Icon(
                                 Icons.Filled.Close,
-                                "Close",
+                                stringResource(id = R.string.button_close),
                             )
                         }
                     },
                     actions = {
                         TextButton(
-                            enabled = title.isNotEmpty() && newSummary.isNullOrEmpty(),
+                            enabled = title.isNotEmpty() && newSummary.isNullOrEmpty() && loading.not(),
                             onClick = {
                                 onAddItem(title, itemsToSelect)
                             },
                         ) {
-                            Text("Generate")
+                            Text(stringResource(R.string.button_generate))
                         }
                     },
                 )
@@ -81,29 +88,36 @@ fun GenerateSummaryDialog(
             Column(
                 modifier = Modifier
                     .padding(paddingValues)
+                    .padding(GenerateSummaryDialog.modalPadding)
                     .verticalScroll(rememberScrollState()),
                 verticalArrangement = Arrangement.spacedBy(GenerateSummaryDialog.contentSpacing),
             ) {
-                OutlinedTextField(modifier = Modifier.fillMaxWidth(), label = { Text("Title for Summary") }, value = title, onValueChange = { title = it })
+                OutlinedTextField(modifier = Modifier.fillMaxWidth(), label = {
+                    Text(
+                        stringResource(
+                            R.string.title_for_summary,
+                        ),
+                    )
+                }, value = title, onValueChange = { title = it })
                 if (error.isNotEmpty()) {
                     Row() {
                         Text(error)
                         Button(onClick = {
                             onAddItem(title, itemsToSelect)
                         }) {
-                            Text(text = "Try again")
+                            Text(text = stringResource(R.string.button_try_again))
                         }
                     }
                 }
                 val summaryTitleText = when {
-                    loading -> "Generating summary..."
-                    newSummary != null -> "Summary"
+                    loading -> stringResource(R.string.generating_summary)
+                    newSummary != null -> stringResource(R.string.summary)
                     else -> ""
                 }
                 if (newSummary.isNullOrEmpty().not()) Text(summaryTitleText, style = MaterialTheme.typography.titleLarge)
                 if (loading) CircularProgressIndicator()
                 Text("$newSummary")
-                Text("Items included", style = MaterialTheme.typography.titleLarge)
+                if (itemsToSelect.isNotEmpty()) Text(stringResource(R.string.items_included), style = MaterialTheme.typography.titleLarge)
                 itemsToSelect.map {
                     Text(
                         it.text,
@@ -127,4 +141,5 @@ object GenerateSummaryDialog {
     val shape = RoundedCornerShape(12.dp)
     val padding = 12.dp
     val contentSpacing = 12.dp
+    val modalPadding = 16.dp
 }

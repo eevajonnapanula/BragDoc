@@ -25,6 +25,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.heading
 import androidx.compose.ui.semantics.semantics
@@ -91,6 +92,7 @@ fun BragDocApp(viewModel: BragDocViewModel) {
         },
         floatingActionButton = {
             Column(verticalArrangement = Arrangement.spacedBy(12.dp), horizontalAlignment = Alignment.End) {
+                val snackbarText = stringResource(R.string.minimum_three_items)
                 when (currentScreen) {
                     NavRoutes.Items.route -> {
                         ExtendedFloatingActionButton(
@@ -99,7 +101,7 @@ fun BragDocApp(viewModel: BragDocViewModel) {
                                 Icon(Icons.Default.Add, contentDescription = null)
                             },
                             text = {
-                                Text("Add item")
+                                Text(stringResource(R.string.button_add_item))
                             },
                         )
                     }
@@ -109,13 +111,13 @@ fun BragDocApp(viewModel: BragDocViewModel) {
                                 showGenerateSummaryDialog = true
                             } else
                                 scope.launch {
-                                    snackbarHostState.showSnackbar("You need to have at least three items in your list that are not yet part of a summary.")
+                                    snackbarHostState.showSnackbar(snackbarText)
                                 }
                         },
                         icon = {
                             Icon(Icons.Default.Edit, contentDescription = null)
                         },
-                        text = { Text("Generate summary") },
+                        text = { Text(stringResource(R.string.button_generate_summary)) },
                     )
                 }
             }
@@ -129,14 +131,18 @@ fun BragDocApp(viewModel: BragDocViewModel) {
         ) {
             NavHost(navController = navController, startDestination = NavRoutes.Items.route) {
                 composable(NavRoutes.Items.route) {
-                    BragItemsScreen(viewModel.bragItems) { item ->
+                    BragItemsScreen(viewModel.bragItems, onEmptyStateButtonClick = { showAddItemDialog = true }) { item ->
                         showDeleteItemDialog = true
                         selectedItem = item
                     }
                     currentScreen = NavRoutes.Items.route
                 }
-                composable(NavRoutes.Summaries.route) {
-                    SummariesScreen(viewModel.summaries) { summary ->
+                composable(NavRoutes.Summaries.route) { _ ->
+                    SummariesScreen(
+                        viewModel.summaries,
+                        itemsCount = viewModel.bragItems.count { item -> item.summaryId != null },
+                        onEmptyStateButtonClick = { showGenerateSummaryDialog = true },
+                    ) { summary ->
                         showDeleteSummaryDialog = true
                         selectedSummary = summary
                     }
@@ -154,14 +160,18 @@ fun BragDocApp(viewModel: BragDocViewModel) {
             )
         }
         if (showGenerateSummaryDialog) {
+            val context = LocalContext.current
             GenerateSummaryDialog(
                 itemsToSelect = viewModel.bragItems.filter { items -> items.summaryId == null },
                 loading = viewModel.loading,
                 newSummary = viewModel.summary,
                 error = viewModel.error,
-                onDismissRequest = { showGenerateSummaryDialog = false },
+                onDismissRequest = {
+                    showGenerateSummaryDialog = false
+                    viewModel.clearErrorAndSummary()
+                },
             ) { title, items ->
-                viewModel.generateSummary(title, items)
+                viewModel.generateSummary(context, title, items)
             }
         }
         if (showDeleteItemDialog) {
