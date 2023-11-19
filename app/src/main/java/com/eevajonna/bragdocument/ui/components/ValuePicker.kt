@@ -21,7 +21,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
@@ -102,7 +101,6 @@ fun Dropdown(values: List<String>, expanded: Boolean, onClose: (Boolean) -> Unit
         }
     }
 }
-
 
 object ValuePicker {
     val outerPadding = 8.dp

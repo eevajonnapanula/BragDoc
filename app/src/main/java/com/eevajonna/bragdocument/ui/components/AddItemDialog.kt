@@ -49,7 +49,7 @@ fun AddItemDialog(onDismissRequest: () -> Unit, onAddItem: (text: String, date: 
             topBar = {
                 TopAppBar(
                     title = {
-                            Text("Add new item")
+                        Text("Add new item")
                     },
                     navigationIcon = {
                         IconButton(onClick = { onDismissRequest() }) {
@@ -69,7 +69,7 @@ fun AddItemDialog(onDismissRequest: () -> Unit, onAddItem: (text: String, date: 
                         ) {
                             Text("Save")
                         }
-                    }
+                    },
                 )
             },
         ) { paddingValues ->
@@ -78,10 +78,8 @@ fun AddItemDialog(onDismissRequest: () -> Unit, onAddItem: (text: String, date: 
                     .padding(paddingValues)
                     .padding(AddItemDialog.valuePickerOuterPadding)
                     .fillMaxSize(),
-                verticalArrangement = Arrangement.spacedBy(AddItemDialog.valuePickerInnerPadding)
+                verticalArrangement = Arrangement.spacedBy(AddItemDialog.valuePickerInnerPadding),
             ) {
-
-
                 ValuePicker(
                     months = months,
                     selectedMonth = month,

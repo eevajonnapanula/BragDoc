@@ -3,7 +3,6 @@ package com.eevajonna.bragdocument.ui.screens
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
@@ -47,7 +46,7 @@ fun BragItemsScreen(bragItems: List<BragItem>, onDelete: (BragItem) -> Unit) {
                     Text(
                         year.toString(),
                         style = MaterialTheme.typography.titleLarge,
-                        modifier = Modifier.padding(vertical = BragItemsScreen.yearPadding)
+                        modifier = Modifier.padding(vertical = BragItemsScreen.yearPadding),
                     )
                 }
                 items(itemsForYear.sortedByDescending { it.date }) { item ->
@@ -63,36 +62,34 @@ fun BragItemsScreen(bragItems: List<BragItem>, onDelete: (BragItem) -> Unit) {
 @Composable
 fun BragItemListItem(item: BragItem, onDeleteIconClick: (BragItem) -> Unit) {
     var deleteVisible by remember { mutableStateOf(false) }
-    Box {
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .clickable(role = Role.Button) {
-                    deleteVisible = !deleteVisible
-                }
-                .background(MaterialTheme.colorScheme.secondaryContainer)
-                .padding(BragItemsScreen.itemPadding),
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.spacedBy(BragItemsScreen.itemContentPadding),
-        ) {
-            Month(item.date, modifier = Modifier.weight(1f))
-            Text(
-                item.text,
-                color = MaterialTheme.colorScheme.onSecondaryContainer,
-                modifier = Modifier.weight(4f),
-            )
-        }
+
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .clickable(role = Role.Button) {
+                deleteVisible = !deleteVisible
+            }
+            .background(MaterialTheme.colorScheme.secondaryContainer)
+            .padding(BragItemsScreen.itemPadding),
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.spacedBy(BragItemsScreen.itemContentPadding),
+    ) {
         if (deleteVisible) {
             IconButton(
                 onClick = {
                     onDeleteIconClick(item)
                     deleteVisible = false
                 },
-                modifier = Modifier.align(Alignment.CenterEnd),
             ) {
                 Icon(Icons.Filled.Delete, "Delete")
             }
         }
+        Month(item.date, modifier = Modifier.weight(1f))
+        Text(
+            item.text,
+            color = MaterialTheme.colorScheme.onSecondaryContainer,
+            modifier = Modifier.weight(4f),
+        )
     }
 }
 

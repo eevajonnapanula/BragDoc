@@ -11,6 +11,7 @@ data class BragItem(
     val id: Long = 0,
     val date: LocalDate,
     val text: String = "",
+    val summaryId: Long? = null,
 )
 
 class Converters {
