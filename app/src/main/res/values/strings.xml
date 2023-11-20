@@ -19,7 +19,7 @@
     <string name="items">Items</string>
     <string name="summaries">Summaries</string>
     <string name="button_copy_text">Copy text</string>
-    <string name="month_and_year">Month and Year</string>
+    <string name="month_and_year">When did I do the thing?\nMonth and Year</string>
     <string name="something_went_wrong">Something went wrong.</string>
     <string name="error_text">Error: %1$s</string>
     <string name="prompt">Could you summarize the following items for a self reflection for performance review about %1$d sentences long? Assume it\'s from the past 12 months. %2$s</string>
