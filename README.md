@@ -2,7 +2,9 @@
 
 ![BragDoc](https://github.com/eevajonnapanula/BragDoc/assets/28345294/23a40276-6415-47bd-981d-fbeb44a1570d)
 
+BragDoc makes documenting your wins and highlighting them in, e.g., performance reviews, more straightforward. You can save your big and small victories during the year, and when the time for the performance review comes, you can generate a summary from the items you've logged.
 
+## About the Project
 
 This project for [WWCode App Deploy Hackathon 2023](https://hopin.com/events/wwcode-app-deploy/registration) was put together in about two days, so don't treat it as the best code quality or the most polished project. But I must say that I'm super proud that I could put this together in such a short timeframe 🎉 You can find [the short video I did for the hackathon submission from Youtube.](https://www.youtube.com/watch?v=UnFLjTYSkeE)
 
