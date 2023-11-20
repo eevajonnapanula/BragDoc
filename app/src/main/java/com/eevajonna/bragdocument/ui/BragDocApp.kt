@@ -141,6 +141,11 @@ fun BragDocApp(viewModel: BragDocViewModel) {
                     SummariesScreen(
                         viewModel.summaries,
                         itemsCount = viewModel.bragItems.count { item -> item.summaryId == null },
+                        showSnackbar = { text ->
+                            scope.launch {
+                                snackbarHostState.showSnackbar(text)
+                            }
+                        },
                         onEmptyStateButtonClick = { showGenerateSummaryDialog = true },
                     ) { summary ->
                         showDeleteSummaryDialog = true

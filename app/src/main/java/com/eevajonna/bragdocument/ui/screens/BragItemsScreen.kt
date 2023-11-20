@@ -64,11 +64,23 @@ fun BragItemsScreen(
                     Text(
                         year.toString(),
                         style = MaterialTheme.typography.titleLarge,
-                        modifier = Modifier.padding(vertical = BragItemsScreen.yearPadding),
+                        modifier = Modifier.padding(
+                            vertical = BragItemsScreen.yearPaddingVertical,
+                            horizontal = BragItemsScreen.yearPaddingHorizontal,
+                        ),
                     )
                 }
 
-                items(itemsForYear.sortedWith(compareByDescending<BragItem> { it.date }.thenBy { it.summaryId })) { item ->
+                items(
+                    itemsForYear
+                        .sortedWith(
+                            compareByDescending<BragItem> {
+                                it.date
+                            }.thenBy {
+                                it.summaryId
+                            },
+                        ),
+                ) { item ->
                     BragItemListItem(item) {
                         onDelete(item)
                     }
@@ -81,7 +93,9 @@ fun BragItemsScreen(
 @Composable
 fun BragItemListItem(item: BragItem, onDeleteIconClick: (BragItem) -> Unit) {
     var deleteVisible by remember { mutableStateOf(false) }
-    val background = if (item.summaryId != null) MaterialTheme.colorScheme.surfaceVariant else MaterialTheme.colorScheme.secondaryContainer
+    val background = if (item.summaryId != null) {
+        MaterialTheme.colorScheme.surfaceVariant
+    } else MaterialTheme.colorScheme.secondaryContainer
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -149,7 +163,8 @@ fun BragItemScreenPreview() {
 }
 
 object BragItemsScreen {
-    val yearPadding = 12.dp
+    val yearPaddingVertical = 12.dp
+    val yearPaddingHorizontal = 16.dp
     val itemContentPadding = 8.dp
     val itemPadding = 12.dp
     val monthSize = 48.dp

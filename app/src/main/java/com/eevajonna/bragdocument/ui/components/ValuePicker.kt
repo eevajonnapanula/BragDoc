@@ -1,6 +1,7 @@
 package com.eevajonna.bragdocument.ui.components
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -46,6 +47,7 @@ fun ValuePicker(
             .clip(ValuePicker.shape)
             .background(MaterialTheme.colorScheme.surfaceVariant)
             .padding(ValuePicker.contentPadding),
+        verticalArrangement = Arrangement.spacedBy(ValuePicker.contentSpacing),
     ) {
         Text(stringResource(R.string.month_and_year), style = MaterialTheme.typography.titleMedium)
         Row(modifier = Modifier.fillMaxWidth()) {
@@ -106,6 +108,7 @@ fun Dropdown(values: List<String>, expanded: Boolean, onClose: (Boolean) -> Unit
 
 object ValuePicker {
     val outerPadding = 8.dp
-    val contentPadding = 8.dp
+    val contentSpacing = 8.dp
+    val contentPadding = 16.dp
     val shape = RoundedCornerShape(12.dp)
 }

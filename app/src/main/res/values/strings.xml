@@ -19,7 +19,7 @@
     <string name="items">Items</string>
     <string name="summaries">Summaries</string>
     <string name="button_copy_text">Copy text</string>
-    <string name="month_and_year">Month and Year</string>
+    <string name="month_and_year">When did I do the thing?\nMonth and Year</string>
     <string name="something_went_wrong">Something went wrong.</string>
     <string name="error_text">Error: %1$s</string>
     <string name="prompt">Could you summarize the following items for a self reflection for performance review about %1$d sentences long? Assume it\'s from the past 12 months. %2$s</string>
@@ -30,4 +30,5 @@
     <string name="items_empty_state_content">Start adding things you\'ve done</string>
     <string name="summaries_empty_state_title">Generate your first summary</string>
     <string name="summaries_empty_state_content">"When you have have added at least three items, you can generate a report from \"Generate summary\"-button "</string>
+    <string name="text_copied">Summary copied.</string>
 </resources>

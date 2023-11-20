@@ -30,17 +30,28 @@ import com.eevajonna.bragdocument.R
 import com.eevajonna.bragdocument.data.Summary
 
 @Composable
-fun SummaryCard(summary: Summary, onDeleteSummary: (Summary) -> Unit) {
+fun SummaryCard(
+    summary: Summary,
+    showSnackbar: (String) -> Unit,
+    onDeleteSummary: (Summary) -> Unit,
+) {
     val clipboardManager = LocalClipboardManager.current
     var expanded by remember {
         mutableStateOf(false)
     }
+    val snackbarText = stringResource(R.string.text_copied)
     Card(
         modifier = Modifier
             .fillMaxWidth(),
     ) {
         Column(modifier = Modifier.padding(SummaryCard.contentPadding), verticalArrangement = Arrangement.spacedBy(SummaryCard.contentSpacing)) {
-            Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.SpaceBetween, modifier = Modifier.fillMaxWidth().clickable { expanded = !expanded }) {
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.SpaceBetween,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .clickable { expanded = !expanded },
+            ) {
                 Text("${summary.title}", style = MaterialTheme.typography.titleLarge)
                 if (expanded) {
                     IconButton(onClick = { onDeleteSummary(summary) }) {
@@ -49,7 +60,10 @@ fun SummaryCard(summary: Summary, onDeleteSummary: (Summary) -> Unit) {
                 }
             }
             if (expanded) {
-                Button(onClick = { clipboardManager.setText(AnnotatedString(summary.text)) }) {
+                Button(onClick = {
+                    clipboardManager.setText(AnnotatedString(summary.text))
+                    showSnackbar(snackbarText)
+                }) {
                     Text(stringResource(R.string.button_copy_text))
                 }
                 SelectionContainer {

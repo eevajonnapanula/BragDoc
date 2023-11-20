@@ -16,7 +16,13 @@ import com.eevajonna.bragdocument.ui.components.EmptyScreenMessage
 import com.eevajonna.bragdocument.ui.components.SummaryCard
 
 @Composable
-fun SummariesScreen(summaries: List<SummaryWithItems>, itemsCount: Int, onEmptyStateButtonClick: () -> Unit, onDeleteSummary: (Summary) -> Unit) {
+fun SummariesScreen(
+    summaries: List<SummaryWithItems>,
+    itemsCount: Int,
+    showSnackbar: (String) -> Unit,
+    onEmptyStateButtonClick: () -> Unit,
+    onDeleteSummary: (Summary) -> Unit,
+) {
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -32,7 +38,7 @@ fun SummariesScreen(summaries: List<SummaryWithItems>, itemsCount: Int, onEmptyS
             ) { onEmptyStateButtonClick() }
         }
         summaries.map {
-            SummaryCard(summary = it.summary, onDeleteSummary = onDeleteSummary)
+            SummaryCard(summary = it.summary, showSnackbar = showSnackbar, onDeleteSummary = onDeleteSummary)
         }
     }
 }
