@@ -1,6 +1,7 @@
 # BragDoc
 
-![BragDoc](https://github.com/eevajonnapanula/BragDoc/assets/28345294/23a40276-6415-47bd-981d-fbeb44a1570d)
+![BragDoc](https://github.com/eevajonnapanula/BragDoc/assets/28345294/6059e6b8-6610-47d9-9e8a-5ab345037657)
+
 
 BragDoc makes documenting your wins and highlighting them in, e.g., performance reviews, more straightforward. You can save your big and small victories during the year, and when the time for the performance review comes, you can generate a summary from the items you've logged.
 
