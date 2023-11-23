@@ -47,4 +47,5 @@ As mentioned before, this was initially a hackathon project, and due to time con
 - Accessibility. As this project was built in two days, I did not pay enough attention to accessibility, and I will improve it later.
 - Code quality. Again, two days and a lot to do - there probably are many things that could be improved, but the main goal was to get the project working.
 - UI. There are lots of things that can be improved in the app's UI. The goal was to make it work, so I decided not to spend much time on some of the details in the UI, and they should be improved.
+- Tests. I would definitely add tests.
 
