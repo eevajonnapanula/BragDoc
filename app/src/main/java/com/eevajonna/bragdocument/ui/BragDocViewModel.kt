@@ -17,6 +17,8 @@ import com.eevajonna.bragdocument.data.SettingsDataStoreImpl
 import com.eevajonna.bragdocument.data.Summary
 import com.eevajonna.bragdocument.data.SummaryWithItems
 import com.eevajonna.bragdocument.openai.OpenAIService
+import com.eevajonna.bragdocument.remoteconfig.RemoteConfigService
+import com.eevajonna.bragdocument.remoteconfig.RemoteConfigServiceImpl
 import com.eevajonna.bragdocument.settingsDataStore
 import com.eevajonna.bragdocument.utils.Language
 import kotlinx.coroutines.Dispatchers
@@ -29,10 +31,12 @@ class BragDocViewModel(application: Application) : ViewModel() {
     var summary by mutableStateOf("")
     var loading by mutableStateOf(false)
     var error by mutableStateOf("")
+    var summaryEnabled by mutableStateOf(false)
     var languageSelectionEnabled by mutableStateOf(false)
 
     private val repository: BragDocRepository
     private val openAIService: OpenAIService
+    private val remoteConfigService: RemoteConfigService
 
     init {
         val db = AppDatabase.getDatabase(application)
@@ -41,9 +45,11 @@ class BragDocViewModel(application: Application) : ViewModel() {
 
         repository = BragDocRepositoryImpl(dao, settingsDataStore)
         openAIService = OpenAIService()
+        remoteConfigService = RemoteConfigServiceImpl()
         getItems()
         getSummaries()
         getSettings()
+        getRemoteConfig()
     }
 
     fun addBragItem(text: String, date: LocalDate) {
@@ -65,6 +71,8 @@ class BragDocViewModel(application: Application) : ViewModel() {
     }
 
     fun generateSummary(context: Context, title: String, itemsInSummary: List<BragItem>, language: Language) {
+        if (summaryEnabled.not()) return
+
         val textItems = itemsInSummary.map { it.text }
 
         try {
@@ -92,7 +100,8 @@ class BragDocViewModel(application: Application) : ViewModel() {
                 }
 
                 loading = false
-            } } catch (e: Exception) {
+            }
+        } catch (e: Exception) {
             error = context.getString(R.string.something_went_wrong)
         }
     }
@@ -130,9 +139,16 @@ class BragDocViewModel(application: Application) : ViewModel() {
             }
         }
     }
+
+    private fun getRemoteConfig() {
+        viewModelScope.launch {
+            remoteConfigService.fetchConfig()
+            summaryEnabled = remoteConfigService.summaryEnabled
+        }
+    }
 }
 
-class BragDocViewModelFactory(val application: Application) : ViewModelProvider.Factory {
+class BragDocViewModelFactory(private val application: Application) : ViewModelProvider.Factory {
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         return BragDocViewModel(application) as T
     }

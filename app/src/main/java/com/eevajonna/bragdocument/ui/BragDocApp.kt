@@ -83,7 +83,12 @@ fun BragDocApp(viewModel: BragDocViewModel) {
         },
         floatingActionButton = {
             Column(verticalArrangement = Arrangement.spacedBy(12.dp), horizontalAlignment = Alignment.End) {
-                val snackbarText = stringResource(R.string.minimum_three_items)
+                val snackbarText = if (viewModel.summaryEnabled) {
+                    stringResource(R.string.minimum_three_items)
+                } else {
+                    stringResource(R.string.title_summary_generation_temporarily_disabled)
+                }
+
                 when (currentScreen) {
                     NavRoutes.Items.route -> {
                         ExtendedFloatingActionButton(
@@ -96,20 +101,23 @@ fun BragDocApp(viewModel: BragDocViewModel) {
                             },
                         )
                     }
-                    NavRoutes.Summaries.route -> ExtendedFloatingActionButton(
-                        onClick = {
-                            if (viewModel.bragItems.count { it.summaryId == null } >= 3) {
-                                showGenerateSummaryDialog = true
-                            } else
-                                scope.launch {
-                                    snackbarHostState.showSnackbar(snackbarText)
-                                }
-                        },
-                        icon = {
-                            Icon(Icons.Default.Edit, contentDescription = null)
-                        },
-                        text = { Text(stringResource(R.string.button_generate_summary)) },
-                    )
+                    NavRoutes.Summaries.route -> {
+                        val shouldShowSummaryGenerationDialog = viewModel.bragItems.count { it.summaryId == null } >= 3 && viewModel.summaryEnabled
+                        ExtendedFloatingActionButton(
+                            onClick = {
+                                if (shouldShowSummaryGenerationDialog) {
+                                    showGenerateSummaryDialog = true
+                                } else
+                                    scope.launch {
+                                        snackbarHostState.showSnackbar(snackbarText)
+                                    }
+                            },
+                            icon = {
+                                Icon(Icons.Default.Edit, contentDescription = null)
+                            },
+                            text = { Text(stringResource(R.string.button_generate_summary)) },
+                        )
+                    }
                 }
             }
         },
@@ -132,6 +140,7 @@ fun BragDocApp(viewModel: BragDocViewModel) {
                     SummariesScreen(
                         viewModel.summaries,
                         itemsCount = viewModel.bragItems.count { item -> item.summaryId == null },
+                        summaryEnabled = viewModel.summaryEnabled,
                         showSnackbar = { text ->
                             scope.launch {
                                 snackbarHostState.showSnackbar(text)

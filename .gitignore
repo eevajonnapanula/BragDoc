@@ -15,4 +15,5 @@
 local.properties
 /app/google-services.json
 secrets.properties
+/.idea/
 /app/release

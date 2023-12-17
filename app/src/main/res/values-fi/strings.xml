@@ -30,6 +30,8 @@
     <string name="summaries_empty_state_title">Luo ensimmäinen tiivistelmäsi</string>
     <string name="summaries_empty_state_content">Kun olet lisännyt vähintään kolme saavutusta, voit luoda tiivistelmän \"Luo tiivistelmä\"-nappia painamalla</string>
     <string name="text_copied">Tiivistelmä kopioitu</string>
+    <string name="title_summary_generation_temporarily_disabled">Tiivistelmän generointi on väliaikaisesti pois käytöstä.</string>
+    <string name="text_body_summary_generation_temporarily_disabled">Yritä myöhemmin uudelleen!</string>
     <string name="select_at_least_three_items">Valitse vähintään kolme saavutusta.</string>
     <string name="lang_english">Englanti</string>
     <string name="lang_finnish">Suomi</string>

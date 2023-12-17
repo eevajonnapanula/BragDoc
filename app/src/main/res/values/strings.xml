@@ -34,6 +34,8 @@
     <string name="summaries_empty_state_title">Generate your first summary</string>
     <string name="summaries_empty_state_content">"When you have added at least three accomplishments, you can generate a report from \"Generate summary\"-button "</string>
     <string name="text_copied">Summary copied.</string>
+    <string name="title_summary_generation_temporarily_disabled">Summary generation temporarily disabled</string>
+    <string name="text_body_summary_generation_temporarily_disabled">Check back later!</string>
     <string name="select_at_least_three_items">Select at least three accomplishments.</string>
     <string name="lang_english">English</string>
     <string name="lang_finnish">Finnish</string>
