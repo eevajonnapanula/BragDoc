@@ -47,7 +47,7 @@ fun ValuePicker(
             .clip(ValuePicker.shape)
             .background(MaterialTheme.colorScheme.surfaceVariant)
             .padding(ValuePicker.contentPadding),
-        verticalArrangement = Arrangement.spacedBy(ValuePicker.contentSpacing),
+        verticalArrangement = Arrangement.spacedBy(ValuePicker.contentSpacing)
     ) {
         Text(stringResource(R.string.month_and_year), style = MaterialTheme.typography.titleMedium)
         Row(modifier = Modifier.fillMaxWidth()) {
