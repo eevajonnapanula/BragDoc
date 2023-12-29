@@ -8,4 +8,9 @@ object TextUtils {
         val formatter = DateTimeFormatter.ofPattern(pattern)
         return date.format(formatter)
     }
+
+    fun formatFullMonth(date: LocalDate): String {
+        val month = formatDate(date, "LLLL")
+        return month.replaceFirstChar { it.uppercase() }
+    }
 }
