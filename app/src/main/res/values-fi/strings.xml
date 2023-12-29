@@ -1,0 +1,34 @@
+<resources>
+    <string name="app_name">BragDoc</string>
+    <string name="system_prompt">You are a helpful assistant helping with self reflections for performance reviews. You answer in Finnish.</string>
+    <string name="add_item_text_label">Siisti juttu, jonka tein</string>
+    <string name="button_save">Tallenna</string>
+    <string name="button_close">Sulje</string>
+    <string name="delete_dialog_title">Oletko varma?</string>
+    <string name="button_delete">Poista</string>
+    <string name="do_you_want_to_delete">Haluatko poistaa seuraavan: \"%1$s\"?</string>
+    <string name="button_dismiss">Hylkää</string>
+    <string name="placeholder_summary_title">Tiivistelmä (%1$s/%2$s)</string>
+    <string name="create_new_summary_title">Luo uusi tiivistelmä</string>
+    <string name="button_generate">Luo</string>
+    <string name="title_for_summary">Tiivistelmän otsikko</string>
+    <string name="button_try_again">Yritä uudelleen</string>
+    <string name="generating_summary">Luodaan tiivistelmää...</string>
+    <string name="summary">Tiivistelmä</string>
+    <string name="items_included">Mukana olevat jutut</string>
+    <string name="items">Tapahtumat</string>
+    <string name="summaries">Tiivistelmät</string>
+    <string name="button_copy_text">Kopioi teksti</string>
+    <string name="month_and_year">Milloin tämä juttu tapahtui?\nVuosi ja kuukausir</string>
+    <string name="something_went_wrong">Jokin meni pieleen.</string>
+    <string name="error_text">Virhe: %1$s</string>
+    <string name="prompt">Could you summarize the following items in Finnish for a self reflection for performance review about %1$d sentences long? Assume it\'s from the past 12 months. %2$s</string>
+    <string name="button_add_item">Lisää juttu</string>
+    <string name="button_generate_summary">Luo tiivistelmä</string>
+    <string name="minimum_three_items">Sinulla täytyy olla ainakin kolme juttua, jotka eivät ole vielä osa tiivistelmää.</string>
+    <string name="items_empty_state_title">Aika lisätä juttuja, joista olet ylpeä!</string>
+    <string name="items_empty_state_content">Aloita lisäämällä juttuja, joita olet tehnyt</string>
+    <string name="summaries_empty_state_title">Luo ensimmäinen tiivistelmäsi</string>
+    <string name="summaries_empty_state_content">Kun olet lisännyt vähintään kolme juttua, voit luoda tiivistelmän \"Luo tiivistelmä\"-nappia painamalla</string>
+    <string name="text_copied">Tiivistelmä kopioitu</string>
+</resources>
