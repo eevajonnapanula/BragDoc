@@ -13,6 +13,7 @@ import com.aallam.openai.client.OpenAIConfig
 import com.aallam.openai.client.RetryStrategy
 import com.eevajonna.bragdocument.BuildConfig
 import com.eevajonna.bragdocument.R
+import com.eevajonna.bragdocument.utils.Language
 import kotlin.time.Duration.Companion.seconds
 
 class OpenAIService {
@@ -24,21 +25,24 @@ class OpenAIService {
 
     private val openAI = OpenAI(config)
 
-    suspend fun getPerformanceReview(context: Context, bragItemTexts: List<String>): String? {
+    suspend fun getPerformanceReview(context: Context, bragItemTexts: List<String>, language: Language): String? {
         val sentences = when (bragItemTexts.count()) {
             in 3..5 -> 3
             in 5..10 -> 4
             else -> 5
         }
+        val promptResId = if (language == Language.EN) R.string.prompt else R.string.prompt_fi
+        val prompt = context.getString(promptResId, sentences, bragItemTexts.joinToString("\n"))
 
-        val prompt = context.getString(R.string.prompt, sentences, bragItemTexts.joinToString("\n"))
+        val systemPromptResId = if (language == Language.EN) R.string.system_prompt else R.string.system_prompt_fi
+
         try {
             val chatCompletionRequest = ChatCompletionRequest(
                 model = ModelId(MODEL),
                 messages = listOf(
                     ChatMessage(
                         role = ChatRole.System,
-                        content = context.getString(R.string.system_prompt),
+                        content = context.getString(systemPromptResId),
                     ),
                     ChatMessage(
                         role = ChatRole.User,

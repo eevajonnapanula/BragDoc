@@ -16,6 +16,7 @@ import com.eevajonna.bragdocument.data.BragItem
 import com.eevajonna.bragdocument.data.Summary
 import com.eevajonna.bragdocument.data.SummaryWithItems
 import com.eevajonna.bragdocument.openai.OpenAIService
+import com.eevajonna.bragdocument.utils.Language
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.time.LocalDate
@@ -58,17 +59,17 @@ class BragDocViewModel(application: Application) : ViewModel() {
         }
     }
 
-    fun generateSummary(context: Context, title: String, itemsInSummary: List<BragItem>) {
+    fun generateSummary(context: Context, title: String, itemsInSummary: List<BragItem>, language: Language) {
         val textItems = itemsInSummary.map { it.text }
 
         try {
             viewModelScope.launch(Dispatchers.IO) {
                 loading = true
 
-                val summaryContent = openAIService.getPerformanceReview(context, textItems)
+                val summaryContent = openAIService.getPerformanceReview(context, textItems, language)
 
                 summaryContent?.let { content ->
-                    if (summaryContent.startsWith(context.getString(R.string.error_text))) {
+                    if (summaryContent.startsWith("Error:")) {
                         error = context.getString(R.string.something_went_wrong)
                     } else {
                         summary = content

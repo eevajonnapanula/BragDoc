@@ -175,8 +175,8 @@ fun BragDocApp(viewModel: BragDocViewModel) {
                     showGenerateSummaryDialog = false
                     viewModel.clearErrorAndSummary()
                 },
-            ) { title, items ->
-                viewModel.generateSummary(context, title, items)
+            ) { title, items, language ->
+                viewModel.generateSummary(context, title, items, language)
             }
         }
         if (showDeleteItemDialog) {

@@ -1,6 +1,5 @@
 <resources>
     <string name="app_name">BragDoc</string>
-    <string name="system_prompt">You are a helpful assistant helping with self reflections for performance reviews. You answer in Finnish.</string>
     <string name="add_item_text_label">Siisti juttu, jonka tein</string>
     <string name="button_save">Tallenna</string>
     <string name="button_close">Sulje</string>
@@ -21,8 +20,7 @@
     <string name="button_copy_text">Kopioi teksti</string>
     <string name="month_and_year">Milloin tämä juttu tapahtui?\nVuosi ja kuukausir</string>
     <string name="something_went_wrong">Jokin meni pieleen.</string>
-    <string name="error_text">Virhe: %1$s</string>
-    <string name="prompt">Could you summarize the following items in Finnish for a self reflection for performance review about %1$d sentences long? Assume it\'s from the past 12 months. %2$s</string>
+    <string name="error_text">Error: %1$s</string>
     <string name="button_add_item">Lisää juttu</string>
     <string name="button_generate_summary">Luo tiivistelmä</string>
     <string name="minimum_three_items">Sinulla täytyy olla ainakin kolme juttua, jotka eivät ole vielä osa tiivistelmää.</string>
@@ -32,4 +30,7 @@
     <string name="summaries_empty_state_content">Kun olet lisännyt vähintään kolme juttua, voit luoda tiivistelmän \"Luo tiivistelmä\"-nappia painamalla</string>
     <string name="text_copied">Tiivistelmä kopioitu</string>
     <string name="select_at_least_three_items">Valitse vähintään kolme juttua.</string>
+    <string name="lang_english">Englanti</string>
+    <string name="lang_finnish">Suomi</string>
+    <string name="title_select_language">Valitse kieli</string>
 </resources>

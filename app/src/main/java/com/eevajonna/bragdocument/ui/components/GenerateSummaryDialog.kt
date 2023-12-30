@@ -7,11 +7,9 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.selection.selectable
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
@@ -29,12 +27,9 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
@@ -42,6 +37,7 @@ import androidx.compose.ui.window.DialogProperties
 import com.eevajonna.bragdocument.R
 import com.eevajonna.bragdocument.data.BragItem
 import com.eevajonna.bragdocument.ui.theme.BragDocumentTheme
+import com.eevajonna.bragdocument.utils.Language
 import java.time.LocalDate
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -52,7 +48,7 @@ fun GenerateSummaryDialog(
     newSummary: String?,
     error: String,
     onDismissRequest: () -> Unit,
-    onAddItem: (String, List<BragItem>) -> Unit,
+    onAddItem: (String, List<BragItem>, Language) -> Unit,
 ) {
     val today = LocalDate.now()
     val initialTitle = stringResource(
@@ -68,12 +64,21 @@ fun GenerateSummaryDialog(
         mutableStateOf(itemsToSelect.map { it.id }.toSet())
     }
 
+    var selectedLanguage by remember {
+        mutableStateOf(Language.EN)
+    }
+
     fun toggleSelect(item: BragItem) {
-        if (selectedItems.contains(item.id)) {
-            selectedItems = selectedItems.minus(item.id)
+        selectedItems = if (selectedItems.contains(item.id)) {
+            selectedItems.minus(item.id)
         } else {
-            selectedItems = selectedItems.plus(item.id)
+            selectedItems.plus(item.id)
         }
+    }
+
+    fun addItems() {
+        val items = itemsToSelect.filter { selectedItems.contains(it.id) }
+        onAddItem(title, items, selectedLanguage)
     }
 
     Dialog(onDismissRequest = { onDismissRequest() }, properties = DialogProperties(usePlatformDefaultWidth = false)) {
@@ -95,8 +100,7 @@ fun GenerateSummaryDialog(
                         TextButton(
                             enabled = title.isNotEmpty() && newSummary.isNullOrEmpty() && loading.not() && selectedItems.count() >= 3,
                             onClick = {
-                                val items = itemsToSelect.filter { selectedItems.contains(it.id) }
-                                onAddItem(title, items)
+                                addItems()
                             },
                         ) {
                             Text(stringResource(R.string.button_generate))
@@ -112,44 +116,28 @@ fun GenerateSummaryDialog(
                     .verticalScroll(rememberScrollState()),
                 verticalArrangement = Arrangement.spacedBy(GenerateSummaryDialog.contentSpacing),
             ) {
-                OutlinedTextField(modifier = Modifier.fillMaxWidth(), label = {
-                    Text(
-                        stringResource(
-                            R.string.title_for_summary,
-                        ),
-                    )
-                }, value = title, onValueChange = { title = it })
                 if (error.isNotEmpty()) {
-                    Row() {
-                        Text(error)
-                        Button(
-                            enabled = selectedItems.count() >= 3,
-                            onClick = {
-                                val items = itemsToSelect.filter { selectedItems.contains(it.id) }
-                                onAddItem(title, items)
-                            },
-                        ) {
-                            Text(text = stringResource(R.string.button_try_again))
-                        }
+                    ErrorContent(error) {
+                        addItems()
                     }
                 }
-                val summaryTitleText = when {
-                    loading -> stringResource(R.string.generating_summary)
-                    newSummary != null -> stringResource(R.string.summary)
-                    else -> ""
-                }
-                if (newSummary.isNullOrEmpty().not()) Text(summaryTitleText, style = MaterialTheme.typography.titleLarge)
-                if (loading) CircularProgressIndicator()
-                Text("$newSummary")
-                if (newSummary.isNullOrEmpty()) {
-                    Text(
-                        stringResource(R.string.items_included),
-                        style = MaterialTheme.typography.titleLarge,
-                    )
-                    Text(stringResource(R.string.select_at_least_three_items))
-
-                    itemsToSelect.map {
-                        SelectableItem(it, selectedItems.contains(it.id)) {
+                when {
+                    loading -> CircularProgressIndicator()
+                    newSummary.isNullOrEmpty().not() -> {
+                        GeneratedSummary(summaryTitle = title, summaryText = newSummary)
+                    }
+                    else -> {
+                        OutlinedTextField(modifier = Modifier.fillMaxWidth(), label = {
+                            Text(
+                                stringResource(
+                                    R.string.title_for_summary,
+                                ),
+                            )
+                        }, value = title, onValueChange = { title = it })
+                        LanguageSelect(selectedLanguage = selectedLanguage) {
+                            selectedLanguage = it
+                        }
+                        ItemSelect(items = itemsToSelect, selectedItems = selectedItems) {
                             toggleSelect(it)
                         }
                     }
@@ -160,43 +148,74 @@ fun GenerateSummaryDialog(
 }
 
 @Composable
-fun SelectableItem(item: BragItem, selected: Boolean, toggleSelect: (BragItem) -> Unit) {
-    Row(
+fun ErrorContent(error: String, addItems: () -> Unit) {
+    Column(
         modifier = Modifier
-            .fillMaxWidth()
             .clip(
                 GenerateSummaryDialog.shape,
             )
-            .selectable(
-                selected = selected,
-                role = Role.Checkbox,
-            ) {
-                toggleSelect(item)
-            }
-            .background(MaterialTheme.colorScheme.secondaryContainer)
+            .background(MaterialTheme.colorScheme.tertiaryContainer)
             .padding(GenerateSummaryDialog.padding),
-        horizontalArrangement = Arrangement.SpaceBetween,
-        verticalAlignment = Alignment.CenterVertically,
+        verticalArrangement = Arrangement.spacedBy(GenerateSummaryDialog.contentSpacing),
     ) {
-        Icon(
-            imageVector = Icons.Default.Check,
-            contentDescription = null,
-            tint = if (selected) MaterialTheme.colorScheme.onSecondaryContainer else Color.Transparent,
-            modifier = Modifier.weight(1f),
-        )
         Text(
-            text = item.text,
-            color = MaterialTheme.colorScheme.onSecondaryContainer,
-            style = MaterialTheme.typography.titleMedium,
-            modifier = Modifier.weight(5f),
+            text = error,
+            color = MaterialTheme.colorScheme.onTertiaryContainer,
         )
+        Button(
+            onClick = {
+                addItems()
+            },
+        ) {
+            Text(
+                text = stringResource(R.string.button_try_again),
+            )
+        }
+    }
+}
+
+@Composable
+fun GeneratedSummary(summaryTitle: String, summaryText: String?) {
+    Text(summaryTitle, style = MaterialTheme.typography.titleLarge)
+    Text("$summaryText")
+}
+
+@Composable
+fun ItemSelect(items: List<BragItem>, selectedItems: Set<Long>, toggleSelect: (BragItem) -> Unit) {
+    Text(
+        stringResource(R.string.items_included),
+        style = MaterialTheme.typography.titleLarge,
+    )
+    Text(stringResource(R.string.select_at_least_three_items))
+
+    items.map {
+        SelectableItem(it, selectedItems.contains(it.id)) { item ->
+            toggleSelect(item)
+        }
+    }
+}
+
+@Composable
+fun LanguageSelect(selectedLanguage: Language, setSelectedLanguage: (Language) -> Unit) {
+    Text(
+        stringResource(R.string.title_select_language),
+        style = MaterialTheme.typography.titleLarge,
+    )
+
+    Row(horizontalArrangement = Arrangement.spacedBy(GenerateSummaryDialog.padding)) {
+        ToggleableItem(text = stringResource(R.string.lang_english), selected = selectedLanguage == Language.EN) {
+            setSelectedLanguage(if (it) Language.EN else Language.FI)
+        }
+        ToggleableItem(text = stringResource(R.string.lang_finnish), selected = selectedLanguage == Language.FI) {
+            setSelectedLanguage(if (it) Language.FI else Language.EN)
+        }
     }
 }
 
 @Preview(showSystemUi = true)
 @Composable
 fun GenerateSummaryDialogPreview() {
-    fun a(b: String, c: List<BragItem>) {}
+    fun a(b: String, c: List<BragItem>, d: Language) {}
     BragDocumentTheme {
         GenerateSummaryDialog(
             itemsToSelect = listOf(
