@@ -3,6 +3,7 @@
     <string name="add_item_text_label">Siisti juttu, jonka tein</string>
     <string name="button_save">Tallenna</string>
     <string name="button_close">Sulje</string>
+    <string name="button_choose">Valitse</string>
     <string name="delete_dialog_title">Oletko varma?</string>
     <string name="button_delete">Poista</string>
     <string name="do_you_want_to_delete">Haluatko poistaa seuraavan: \"%1$s\"?</string>
@@ -36,4 +37,9 @@
     <string name="settings">Asetukset</string>
     <string name="title_language_selection">Kielivalinta</string>
     <string name="setting_language_selection">Näytä kielivalinta tiivistelmää luotaessa</string>
+    <string name="title_add_new_item">Lisää uusi</string>
+    <string name="choose_year">Valitse vuosi</string>
+    <string name="choose_month">Valitse kuukausi</string>
+    <string name="title_when">Koska</string>
+    <string name="title_what">Mitä</string>
 </resources>

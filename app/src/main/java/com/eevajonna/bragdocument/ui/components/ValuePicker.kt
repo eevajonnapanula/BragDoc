@@ -1,20 +1,21 @@
 package com.eevajonna.bragdocument.ui.components
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.selection.selectableGroup
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowDropDown
-import androidx.compose.material.icons.outlined.Check
-import androidx.compose.material3.DropdownMenu
-import androidx.compose.material3.DropdownMenuItem
+import androidx.compose.material.icons.filled.Edit
+import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
@@ -22,8 +23,8 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.eevajonna.bragdocument.R
@@ -38,77 +39,108 @@ fun ValuePicker(
     setSelectedYear: (Int) -> Unit,
 ) {
     var monthsOpen by remember { mutableStateOf(false) }
-
     var yearsOpen by remember { mutableStateOf(false) }
 
     Column(
         modifier = Modifier
-            .padding(vertical = ValuePicker.outerPadding)
-            .clip(ValuePicker.shape)
-            .background(MaterialTheme.colorScheme.surfaceVariant)
-            .padding(ValuePicker.contentPadding),
+            .padding(vertical = ValuePicker.outerPadding),
         verticalArrangement = Arrangement.spacedBy(ValuePicker.contentSpacing),
     ) {
-        Text(stringResource(R.string.month_and_year), style = MaterialTheme.typography.titleMedium)
-        Row(modifier = Modifier.fillMaxWidth()) {
-            Box {
-                TextButton(onClick = { monthsOpen = true }) {
-                    Text(selectedMonth)
-                    Icon(Icons.Filled.ArrowDropDown, contentDescription = null)
-                }
-                Dropdown(
-                    values = months,
-                    expanded = monthsOpen,
-                    onClose = { monthsOpen = it },
-                    selectedValue = selectedMonth,
-                    setSelectedValue = setSelectedMonth,
-                )
+        Text(stringResource(R.string.title_when), style = MaterialTheme.typography.titleLarge)
+        Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(12.dp)) {
+            EditButton(
+                text = selectedMonth,
+            ) {
+                monthsOpen = true
             }
-            Box {
-                TextButton(onClick = { yearsOpen = true }) {
-                    Text("$selectedYear")
-                    Icon(Icons.Filled.ArrowDropDown, contentDescription = null)
-                }
-                Dropdown(
-                    values = years.map { it.toString() },
-                    expanded = yearsOpen,
-                    onClose = { yearsOpen = it },
-                    selectedValue = selectedYear.toString(),
-                    setSelectedValue = {
-                        setSelectedYear(it.toInt())
+            if (monthsOpen) {
+                ValuePickerDialog(
+                    title = stringResource(R.string.choose_month),
+                    value = selectedMonth,
+                    values = months,
+                    onConfirm = {
+                        setSelectedMonth(it)
+                        monthsOpen = false
                     },
-                )
+                ) {
+                    monthsOpen = false
+                }
+            }
+
+            EditButton(
+                text = "$selectedYear",
+            ) {
+                yearsOpen = true
+            }
+            if (yearsOpen) {
+                ValuePickerDialog(
+                    title = stringResource(R.string.choose_year),
+                    value = selectedYear.toString(),
+                    values = years.map { it.toString() },
+                    onConfirm = {
+                        setSelectedYear(it.toInt())
+                        yearsOpen = false
+                    },
+                ) {
+                    yearsOpen = false
+                }
             }
         }
     }
 }
 
 @Composable
-fun Dropdown(values: List<String>, expanded: Boolean, onClose: (Boolean) -> Unit, selectedValue: String, setSelectedValue: (String) -> Unit) {
-    DropdownMenu(
-        expanded = expanded,
-        onDismissRequest = { onClose(false) },
-    ) {
-        values.map { value ->
-            DropdownMenuItem(
-                text = { Text(value) },
-                onClick = { setSelectedValue(value) },
-                leadingIcon = {
-                    if (value == selectedValue) {
-                        Icon(
-                            Icons.Outlined.Check,
-                            contentDescription = null,
-                        )
-                    }
-                },
-            )
+fun EditButton(text: String, onClick: () -> Unit) {
+    Button(onClick = onClick, shape = OutlinedTextFieldDefaults.shape, contentPadding = PaddingValues(12.dp)) {
+        Row(horizontalArrangement = Arrangement.spacedBy(12.dp), verticalAlignment = Alignment.CenterVertically) {
+            Text(text, style = MaterialTheme.typography.titleMedium)
+            Icon(Icons.Filled.Edit, contentDescription = null)
         }
     }
 }
 
+@Composable
+fun ValuePickerDialog(title: String, value: String, values: List<String>, onConfirm: (String) -> Unit, onDismiss: () -> Unit) {
+    var selectedValue by remember {
+        mutableStateOf(value)
+    }
+    AlertDialog(
+        title = {
+            Text(text = title)
+        },
+        confirmButton = {
+            TextButton(onClick = {
+                onConfirm(selectedValue)
+            }) {
+                Text(stringResource(id = R.string.button_choose))
+            }
+        },
+        text = {
+            LazyColumn(
+                modifier = Modifier
+                    .selectableGroup()
+                    .fillMaxWidth(),
+                verticalArrangement = Arrangement.spacedBy(8.dp),
+            ) {
+                items(values) { value ->
+                    ToggleableItem(text = value, selected = value == selectedValue, onSelect = { selectedValue = value }, style = MaterialTheme.typography.headlineSmall)
+                }
+            }
+        },
+        dismissButton = {
+            TextButton(
+                onClick = {
+                    onDismiss()
+                },
+            ) {
+                Text(stringResource(R.string.button_dismiss))
+            }
+        },
+        onDismissRequest = { onDismiss() },
+    )
+}
+
 object ValuePicker {
     val outerPadding = 8.dp
-    val contentSpacing = 8.dp
-    val contentPadding = 16.dp
-    val shape = RoundedCornerShape(12.dp)
+    val contentSpacing = 12.dp
 }

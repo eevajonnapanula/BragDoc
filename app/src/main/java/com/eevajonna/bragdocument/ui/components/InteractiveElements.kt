@@ -19,13 +19,15 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.semantics.Role
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import com.eevajonna.bragdocument.data.BragItem
 
 @Composable
-fun ToggleableItem(text: String, selected: Boolean, onSelect: (Boolean) -> Unit) {
+fun ToggleableItem(text: String, selected: Boolean, style: TextStyle = MaterialTheme.typography.bodyMedium, onSelect: (Boolean) -> Unit) {
     Row(
         horizontalArrangement = Arrangement.spacedBy(4.dp),
+        verticalAlignment = Alignment.CenterVertically,
         modifier = Modifier.toggleable(
             value = selected,
             role = Role.RadioButton,
@@ -34,7 +36,7 @@ fun ToggleableItem(text: String, selected: Boolean, onSelect: (Boolean) -> Unit)
         },
     ) {
         Icon(Icons.Default.Done, null, tint = if (selected) MaterialTheme.colorScheme.onSecondaryContainer else Color.Transparent)
-        Text(text)
+        Text(text, style = style)
     }
 }
 

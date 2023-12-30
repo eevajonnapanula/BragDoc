@@ -114,6 +114,7 @@ fun BragDocApp(viewModel: BragDocViewModel) {
                         },
                         text = { Text(stringResource(R.string.button_generate_summary)) },
                     )
+                    else -> {}
                 }
             }
         },

@@ -5,6 +5,7 @@
     <string name="add_item_text_label">The cool thing I did</string>
     <string name="button_save">Save</string>
     <string name="button_close">Close</string>
+    <string name="button_choose">Select</string>
     <string name="delete_dialog_title">Are you sure?</string>
     <string name="button_delete">Delete</string>
     <string name="do_you_want_to_delete">Do you want to delete \"%1$s\"?</string>
@@ -40,4 +41,9 @@
     <string name="settings">Settings</string>
     <string name="title_language_selection">Language selection</string>
     <string name="setting_language_selection">Show language selection in summary generation</string>
+    <string name="title_add_new_item">Add new item</string>
+    <string name="choose_year">Choose year</string>
+    <string name="choose_month">Choose month</string>
+    <string name="title_when">When</string>
+    <string name="title_what">What</string>
 </resources>

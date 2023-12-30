@@ -10,6 +10,7 @@ import androidx.compose.material.icons.filled.Close
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -34,7 +35,7 @@ import java.time.LocalDate
 @Composable
 fun AddItemDialog(onDismissRequest: () -> Unit, onAddItem: (text: String, date: LocalDate) -> Unit) {
     val months = DateFormatSymbols().shortMonths.toList()
-    val years = (2010..LocalDate.now().year).sortedDescending().toList()
+    val years = (2018..LocalDate.now().year).sortedDescending().toList()
 
     var text by remember {
         mutableStateOf("")
@@ -51,7 +52,7 @@ fun AddItemDialog(onDismissRequest: () -> Unit, onAddItem: (text: String, date: 
             topBar = {
                 TopAppBar(
                     title = {
-                        Text("Add new item")
+                        Text(stringResource(R.string.title_add_new_item))
                     },
                     navigationIcon = {
                         IconButton(onClick = { onDismissRequest() }) {
@@ -90,7 +91,7 @@ fun AddItemDialog(onDismissRequest: () -> Unit, onAddItem: (text: String, date: 
                     selectedYear = year,
                     setSelectedYear = { year = it },
                 )
-
+                Text(stringResource(R.string.title_what), style = MaterialTheme.typography.titleLarge)
                 OutlinedTextField(modifier = Modifier.fillMaxWidth(), label = {
                     Text(
                         stringResource(
