@@ -22,6 +22,11 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.CustomAccessibilityAction
+import androidx.compose.ui.semantics.clearAndSetSemantics
+import androidx.compose.ui.semantics.customActions
+import androidx.compose.ui.semantics.heading
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.eevajonna.bragdocument.R
@@ -60,7 +65,9 @@ fun BragItemsScreen(
                         modifier = Modifier.padding(
                             vertical = BragItemsScreen.yearPaddingVertical,
                             horizontal = BragItemsScreen.yearPaddingHorizontal,
-                        ),
+                        ).semantics {
+                            heading()
+                        },
                     )
                 }
 
@@ -90,11 +97,20 @@ fun BragItemListItem(item: BragItem, onDeleteIconClick: (BragItem) -> Unit) {
     val background = if (item.summaryId != null) {
         MaterialTheme.colorScheme.surfaceVariant
     } else MaterialTheme.colorScheme.secondaryContainer
+    val deleteText = stringResource(id = R.string.button_delete)
     Row(
         modifier = Modifier
             .fillMaxWidth()
             .background(background)
-            .padding(BragItemsScreen.itemPadding),
+            .padding(BragItemsScreen.itemPadding)
+            .semantics(mergeDescendants = true) {
+                customActions = listOf(
+                    CustomAccessibilityAction(deleteText) {
+                        onDeleteIconClick(item)
+                        true
+                    },
+                )
+            },
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically,
     ) {
@@ -112,12 +128,12 @@ fun BragItemListItem(item: BragItem, onDeleteIconClick: (BragItem) -> Unit) {
             )
         }
         IconButton(
-            modifier = Modifier.weight(1f),
+            modifier = Modifier.weight(1f).clearAndSetSemantics {},
             onClick = {
                 onDeleteIconClick(item)
             },
         ) {
-            Icon(Icons.Filled.Close, stringResource(id = R.string.button_delete))
+            Icon(Icons.Filled.Close, deleteText)
         }
     }
 }
