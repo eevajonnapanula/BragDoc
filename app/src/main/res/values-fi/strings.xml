@@ -15,7 +15,7 @@
     <string name="button_try_again">Yritä uudelleen</string>
     <string name="generating_summary">Luodaan tiivistelmää...</string>
     <string name="summary">Tiivistelmä</string>
-    <string name="items_included">Mukana olevat jutut</string>
+    <string name="items_included">Valitse tiivistelmään sisältyvät jutut</string>
     <string name="items">Tapahtumat</string>
     <string name="summaries">Tiivistelmät</string>
     <string name="button_copy_text">Kopioi teksti</string>
@@ -31,4 +31,5 @@
     <string name="summaries_empty_state_title">Luo ensimmäinen tiivistelmäsi</string>
     <string name="summaries_empty_state_content">Kun olet lisännyt vähintään kolme juttua, voit luoda tiivistelmän \"Luo tiivistelmä\"-nappia painamalla</string>
     <string name="text_copied">Tiivistelmä kopioitu</string>
+    <string name="select_at_least_three_items">Valitse vähintään kolme juttua.</string>
 </resources>

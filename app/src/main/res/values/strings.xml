@@ -15,7 +15,7 @@
     <string name="button_try_again">Try again</string>
     <string name="generating_summary">Generating summary...</string>
     <string name="summary">Summary</string>
-    <string name="items_included">Items included</string>
+    <string name="items_included">Select items to include</string>
     <string name="items">Items</string>
     <string name="summaries">Summaries</string>
     <string name="button_copy_text">Copy text</string>
@@ -29,6 +29,7 @@
     <string name="items_empty_state_title">Time to add things you are proud of</string>
     <string name="items_empty_state_content">Start adding things you\'ve done</string>
     <string name="summaries_empty_state_title">Generate your first summary</string>
-    <string name="summaries_empty_state_content">"When you have have added at least three items, you can generate a report from \"Generate summary\"-button "</string>
+    <string name="summaries_empty_state_content">"When you have added at least three items, you can generate a report from \"Generate summary\"-button "</string>
     <string name="text_copied">Summary copied.</string>
+    <string name="select_at_least_three_items">Select at least three items.</string>
 </resources>
