@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Edit
+import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExtendedFloatingActionButton
 import androidx.compose.material3.Icon
@@ -16,7 +17,6 @@ import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -27,8 +27,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.semantics.heading
-import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.dp
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -40,8 +38,10 @@ import com.eevajonna.bragdocument.ui.components.AddItemDialog
 import com.eevajonna.bragdocument.ui.components.DeleteAlertDialog
 import com.eevajonna.bragdocument.ui.components.GenerateSummaryDialog
 import com.eevajonna.bragdocument.ui.components.NavBar
+import com.eevajonna.bragdocument.ui.components.TopBar
 import com.eevajonna.bragdocument.ui.screens.BragItemsScreen
 import com.eevajonna.bragdocument.ui.screens.NavRoutes
+import com.eevajonna.bragdocument.ui.screens.SettingsScreen
 import com.eevajonna.bragdocument.ui.screens.SummariesScreen
 import kotlinx.coroutines.launch
 
@@ -80,12 +80,7 @@ fun BragDocApp(viewModel: BragDocViewModel) {
             SnackbarHost(hostState = snackbarHostState)
         },
         topBar = {
-            TopAppBar(title = {
-                Text(
-                    text = stringResource(id = R.string.app_name),
-                    modifier = Modifier.semantics { heading() },
-                )
-            })
+            TopBar(currentScreen, navController)
         },
         bottomBar = {
             NavBar(navController = navController)
@@ -153,6 +148,12 @@ fun BragDocApp(viewModel: BragDocViewModel) {
                     }
                     currentScreen = NavRoutes.Summaries.route
                 }
+                composable(NavRoutes.Settings.route) {
+                    SettingsScreen(viewModel.languageSelectionEnabled) { newVal ->
+                        viewModel.saveLanguageSelection(newVal)
+                    }
+                    currentScreen = NavRoutes.Settings.route
+                }
             }
         }
         if (showAddItemDialog) {
@@ -171,6 +172,7 @@ fun BragDocApp(viewModel: BragDocViewModel) {
                 loading = viewModel.loading,
                 newSummary = viewModel.summary,
                 error = viewModel.error,
+                languageSelectionEnabled = viewModel.languageSelectionEnabled,
                 onDismissRequest = {
                     showGenerateSummaryDialog = false
                     viewModel.clearErrorAndSummary()

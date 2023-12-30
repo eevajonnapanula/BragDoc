@@ -75,6 +75,7 @@ dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.2")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.2")
     implementation("androidx.navigation:navigation-compose:2.7.6")
+    implementation("androidx.datastore:datastore-preferences:1.0.0")
 
     // Firebase
     implementation(platform("com.google.firebase:firebase-bom:32.6.0"))

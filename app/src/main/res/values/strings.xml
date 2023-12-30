@@ -37,4 +37,7 @@
     <string name="lang_english">English</string>
     <string name="lang_finnish">Finnish</string>
     <string name="title_select_language">Select language</string>
+    <string name="settings">Settings</string>
+    <string name="title_language_selection">Language selection</string>
+    <string name="setting_language_selection">Show language selection in summary generation</string>
 </resources>

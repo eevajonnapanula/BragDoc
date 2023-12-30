@@ -33,4 +33,7 @@
     <string name="lang_english">Englanti</string>
     <string name="lang_finnish">Suomi</string>
     <string name="title_select_language">Valitse kieli</string>
+    <string name="settings">Asetukset</string>
+    <string name="title_language_selection">Kielivalinta</string>
+    <string name="setting_language_selection">Näytä kielivalinta tiivistelmää luotaessa</string>
 </resources>

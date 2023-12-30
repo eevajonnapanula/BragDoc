@@ -13,9 +13,11 @@ import com.eevajonna.bragdocument.data.AppDatabase
 import com.eevajonna.bragdocument.data.BragDocRepository
 import com.eevajonna.bragdocument.data.BragDocRepositoryImpl
 import com.eevajonna.bragdocument.data.BragItem
+import com.eevajonna.bragdocument.data.SettingsDataStoreImpl
 import com.eevajonna.bragdocument.data.Summary
 import com.eevajonna.bragdocument.data.SummaryWithItems
 import com.eevajonna.bragdocument.openai.OpenAIService
+import com.eevajonna.bragdocument.settingsDataStore
 import com.eevajonna.bragdocument.utils.Language
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -27,6 +29,7 @@ class BragDocViewModel(application: Application) : ViewModel() {
     var summary by mutableStateOf("")
     var loading by mutableStateOf(false)
     var error by mutableStateOf("")
+    var languageSelectionEnabled by mutableStateOf(false)
 
     private val repository: BragDocRepository
     private val openAIService: OpenAIService
@@ -34,11 +37,13 @@ class BragDocViewModel(application: Application) : ViewModel() {
     init {
         val db = AppDatabase.getDatabase(application)
         val dao = db.getDao()
+        val settingsDataStore = SettingsDataStoreImpl(application.settingsDataStore)
 
-        repository = BragDocRepositoryImpl(dao)
+        repository = BragDocRepositoryImpl(dao, settingsDataStore)
         openAIService = OpenAIService()
         getItems()
         getSummaries()
+        getSettings()
     }
 
     fun addBragItem(text: String, date: LocalDate) {
@@ -91,6 +96,11 @@ class BragDocViewModel(application: Application) : ViewModel() {
             error = context.getString(R.string.something_went_wrong)
         }
     }
+    fun saveLanguageSelection(enabled: Boolean) {
+        viewModelScope.launch {
+            repository.saveLanguageSelectionEnabled(enabled)
+        }
+    }
 
     fun clearErrorAndSummary() {
         error = ""
@@ -109,6 +119,14 @@ class BragDocViewModel(application: Application) : ViewModel() {
         viewModelScope.launch {
             repository.getSummaries().collect {
                 summaries = it
+            }
+        }
+    }
+
+    private fun getSettings() {
+        viewModelScope.launch {
+            repository.getLanguageSelectionEanbled().collect() {
+                languageSelectionEnabled = it
             }
         }
     }

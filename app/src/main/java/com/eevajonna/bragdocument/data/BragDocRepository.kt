@@ -18,9 +18,13 @@ interface BragDocRepository {
     suspend fun deleteBragItem(bragItem: BragItem)
 
     suspend fun deleteSummary(summary: Summary)
+
+    suspend fun saveLanguageSelectionEnabled(enabled: Boolean)
+
+    suspend fun getLanguageSelectionEanbled(): Flow<Boolean>
 }
 
-class BragDocRepositoryImpl(private val dao: BragDocDao) : BragDocRepository {
+class BragDocRepositoryImpl(private val dao: BragDocDao, private val settingsDataStore: SettingsDataStore) : BragDocRepository {
     override suspend fun getBragItems(): Flow<List<BragItem>> = dao.getBragItems()
 
     override suspend fun getBragItem(id: Long): Flow<BragItem> = dao.getBragItem(id)
@@ -38,5 +42,11 @@ class BragDocRepositoryImpl(private val dao: BragDocDao) : BragDocRepository {
     override suspend fun deleteSummary(summary: Summary) {
         dao.deleteSummary(summary)
         dao.setSummaryIdsNull(summary.id)
+    }
+
+    override suspend fun saveLanguageSelectionEnabled(enabled: Boolean) = settingsDataStore.saveLanguageSelectionEnabled(enabled)
+
+    override suspend fun getLanguageSelectionEanbled(): Flow<Boolean> {
+        return settingsDataStore.languageSelectionEnabled
     }
 }

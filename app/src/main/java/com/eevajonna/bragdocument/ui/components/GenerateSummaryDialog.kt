@@ -47,6 +47,7 @@ fun GenerateSummaryDialog(
     loading: Boolean,
     newSummary: String?,
     error: String,
+    languageSelectionEnabled: Boolean,
     onDismissRequest: () -> Unit,
     onAddItem: (String, List<BragItem>, Language) -> Unit,
 ) {
@@ -134,8 +135,10 @@ fun GenerateSummaryDialog(
                                 ),
                             )
                         }, value = title, onValueChange = { title = it })
-                        LanguageSelect(selectedLanguage = selectedLanguage) {
-                            selectedLanguage = it
+                        if (languageSelectionEnabled) {
+                            LanguageSelect(selectedLanguage = selectedLanguage) {
+                                selectedLanguage = it
+                            }
                         }
                         ItemSelect(items = itemsToSelect, selectedItems = selectedItems) {
                             toggleSelect(it)
@@ -228,6 +231,7 @@ fun GenerateSummaryDialogPreview() {
             newSummary = "",
             error = "",
             loading = false,
+            languageSelectionEnabled = true,
             onDismissRequest = {},
             onAddItem = ::a,
         )
