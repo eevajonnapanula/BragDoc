@@ -7,8 +7,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Edit
-import androidx.compose.material.icons.filled.Settings
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExtendedFloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -41,11 +39,9 @@ import com.eevajonna.bragdocument.ui.components.NavBar
 import com.eevajonna.bragdocument.ui.components.TopBar
 import com.eevajonna.bragdocument.ui.screens.BragItemsScreen
 import com.eevajonna.bragdocument.ui.screens.NavRoutes
-import com.eevajonna.bragdocument.ui.screens.SettingsScreen
 import com.eevajonna.bragdocument.ui.screens.SummariesScreen
 import kotlinx.coroutines.launch
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun BragDocApp(viewModel: BragDocViewModel) {
     val navController = rememberNavController()
@@ -80,7 +76,7 @@ fun BragDocApp(viewModel: BragDocViewModel) {
             SnackbarHost(hostState = snackbarHostState)
         },
         topBar = {
-            TopBar(currentScreen, navController)
+            TopBar(currentScreen)
         },
         bottomBar = {
             NavBar(navController = navController)
@@ -114,7 +110,6 @@ fun BragDocApp(viewModel: BragDocViewModel) {
                         },
                         text = { Text(stringResource(R.string.button_generate_summary)) },
                     )
-                    else -> {}
                 }
             }
         },
@@ -148,12 +143,6 @@ fun BragDocApp(viewModel: BragDocViewModel) {
                         selectedSummary = summary
                     }
                     currentScreen = NavRoutes.Summaries.route
-                }
-                composable(NavRoutes.Settings.route) {
-                    SettingsScreen(viewModel.languageSelectionEnabled) { newVal ->
-                        viewModel.saveLanguageSelection(newVal)
-                    }
-                    currentScreen = NavRoutes.Settings.route
                 }
             }
         }

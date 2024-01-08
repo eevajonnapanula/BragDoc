@@ -13,11 +13,6 @@ sealed class NavRoutes {
         const val route = "summaries"
         val titleResId = R.string.summaries
     }
-
-    data object Settings : NavRoutes() {
-        const val route = "settings"
-        val titleResId = R.string.settings
-    }
 }
 
 class NavigationItem(val icon: ImageVector, val route: String, val text: String)
