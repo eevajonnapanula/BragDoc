@@ -29,7 +29,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.eevajonna.bragdocument.R
 import com.eevajonna.bragdocument.data.BragItem
-import com.eevajonna.bragdocument.ui.components.EmptyScreenMessage
+import com.eevajonna.bragdocument.ui.components.MessageCard
 import com.eevajonna.bragdocument.ui.theme.BragDocumentTheme
 import com.eevajonna.bragdocument.utils.TextUtils
 import java.time.LocalDate
@@ -44,7 +44,7 @@ fun BragItemsScreen(
     LazyColumn(modifier = Modifier.fillMaxSize()) {
         item {
             if (bragItems.isEmpty()) {
-                EmptyScreenMessage(
+                MessageCard(
                     titleText = stringResource(R.string.items_empty_state_title),
                     text = stringResource(R.string.items_empty_state_content),
                     buttonText = stringResource(id = R.string.button_add_item),

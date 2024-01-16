@@ -12,13 +12,14 @@ import androidx.compose.ui.unit.dp
 import com.eevajonna.bragdocument.R
 import com.eevajonna.bragdocument.data.Summary
 import com.eevajonna.bragdocument.data.SummaryWithItems
-import com.eevajonna.bragdocument.ui.components.EmptyScreenMessage
+import com.eevajonna.bragdocument.ui.components.MessageCard
 import com.eevajonna.bragdocument.ui.components.SummaryCard
 
 @Composable
 fun SummariesScreen(
     summaries: List<SummaryWithItems>,
     itemsCount: Int,
+    summaryEnabled: Boolean,
     showSnackbar: (String) -> Unit,
     onEmptyStateButtonClick: () -> Unit,
     onDeleteSummary: (Summary) -> Unit,
@@ -29,14 +30,25 @@ fun SummariesScreen(
             .verticalScroll(rememberScrollState()),
         verticalArrangement = Arrangement.spacedBy(12.dp),
     ) {
-        if (summaries.isEmpty()) {
-            EmptyScreenMessage(
-                titleText = stringResource(R.string.summaries_empty_state_title),
-                text = stringResource(R.string.summaries_empty_state_content),
-                buttonEnabled = itemsCount >= 3,
-                buttonText = stringResource(id = R.string.button_generate_summary),
-            ) { onEmptyStateButtonClick() }
+        when (summaryEnabled) {
+            false -> {
+                MessageCard(
+                    titleText = stringResource(id = R.string.title_summary_generation_temporarily_disabled),
+                    text = stringResource(R.string.text_body_summary_generation_temporarily_disabled),
+                )
+            }
+            true -> {
+                if (summaries.isEmpty()) {
+                    MessageCard(
+                        titleText = stringResource(R.string.summaries_empty_state_title),
+                        text = stringResource(R.string.summaries_empty_state_content),
+                        buttonEnabled = itemsCount >= 3,
+                        buttonText = stringResource(id = R.string.button_generate_summary),
+                    ) { onEmptyStateButtonClick() }
+                }
+            }
         }
+
         summaries.map {
             SummaryCard(summary = it.summary, showSnackbar = showSnackbar, onDeleteSummary = onDeleteSummary)
         }
