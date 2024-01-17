@@ -120,10 +120,15 @@ fun ValuePickerDialog(title: String, value: String, values: List<String>, onConf
                 modifier = Modifier
                     .selectableGroup()
                     .fillMaxWidth(),
-                verticalArrangement = Arrangement.spacedBy(8.dp),
+                verticalArrangement = Arrangement.spacedBy(4.dp),
             ) {
                 items(values) { value ->
-                    ToggleableItem(text = value, selected = value == selectedValue, onSelect = { selectedValue = value }, style = MaterialTheme.typography.headlineSmall)
+                    ToggleableItem(
+                        text = value,
+                        selected = value == selectedValue,
+                        onSelect = { selectedValue = value },
+                        style = MaterialTheme.typography.headlineSmall,
+                    )
                 }
             }
         },
