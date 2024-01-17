@@ -24,6 +24,8 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.dialog
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
@@ -49,6 +51,9 @@ fun AddItemDialog(onDismissRequest: () -> Unit, onAddItem: (text: String, date: 
 
     Dialog(onDismissRequest = { onDismissRequest() }, properties = DialogProperties(usePlatformDefaultWidth = false)) {
         Scaffold(
+            modifier = Modifier.semantics {
+                dialog()
+            },
             topBar = {
                 TopAppBar(
                     title = {

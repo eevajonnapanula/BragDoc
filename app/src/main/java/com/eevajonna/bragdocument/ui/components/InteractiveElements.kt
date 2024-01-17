@@ -24,16 +24,24 @@ import androidx.compose.ui.unit.dp
 import com.eevajonna.bragdocument.data.BragItem
 
 @Composable
-fun ToggleableItem(text: String, selected: Boolean, style: TextStyle = MaterialTheme.typography.bodyMedium, onSelect: (Boolean) -> Unit) {
+fun ToggleableItem(
+    text: String,
+    selected: Boolean,
+    modifier: Modifier = Modifier,
+    style: TextStyle = MaterialTheme.typography.bodyMedium,
+    onSelect: (Boolean) -> Unit,
+) {
     Row(
         horizontalArrangement = Arrangement.spacedBy(4.dp),
         verticalAlignment = Alignment.CenterVertically,
-        modifier = Modifier.toggleable(
-            value = selected,
-            role = Role.RadioButton,
-        ) {
-            onSelect(it)
-        },
+        modifier = modifier
+            .padding(vertical = ToggleableItem.verticalPadding)
+            .toggleable(
+                value = selected,
+                role = Role.RadioButton,
+            ) {
+                onSelect(it)
+            },
     ) {
         Icon(Icons.Default.Done, null, tint = if (selected) MaterialTheme.colorScheme.onSecondaryContainer else Color.Transparent)
         Text(text, style = style)
@@ -72,4 +80,8 @@ fun SelectableItem(item: BragItem, selected: Boolean, toggleSelect: (BragItem) -
             modifier = Modifier.weight(5f),
         )
     }
+}
+
+object ToggleableItem {
+    val verticalPadding = 4.dp
 }
